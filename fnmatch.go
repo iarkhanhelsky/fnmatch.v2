@@ -1,7 +1,7 @@
 package fnmatch
 
 const (
-	//FNM_NOESCAPE If this flag is set, treat backslash as an ordinary
+	// FNM_NOESCAPE If this flag is set, treat backslash as an ordinary
 	// character, instead of an escape character.
 	FNM_NOESCAPE = (1 << iota)
 	// FNM_PATHNAME If this flag is set, match a slash in string only with a

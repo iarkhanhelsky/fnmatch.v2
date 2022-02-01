@@ -16,6 +16,22 @@ class FnFixture
     
     flags = 0
     list.each do |f|
+      case f
+      when 'fnmatch.FNM_NOESCAPE'
+        flags |= File::FNM_NOESCAPE
+      when 'fnmatch.FNM_PATHNAME'
+          flags |= File::FNM_PATHNAME
+      when 'fnmatch.FNM_PERIOD'
+          flags |= File::FNM_DOTMATCH
+      when 'fnmatch.FNM_LEADING_DIR'
+          # flags |= File::FNM_LEADING_DIR
+      when 'fnmatch.FNM_CASEFOLD'
+          flags |= File::FNM_CASEFOLD
+      when 'fnmatch.FNM_IGNORECASE'
+          flags |= File::FNM_IGNORECASE
+      when 'fnmatch.FNM_FILE_NAME'
+          flags |= File::FNM_FILE_NAME
+      end
     end
     
     flags
