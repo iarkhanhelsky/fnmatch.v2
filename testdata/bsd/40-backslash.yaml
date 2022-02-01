@@ -1,0 +1,62 @@
+# A backslash should escape the following characters
+- pattern: "\\\\"
+  input: "\\"
+  want: true
+
+- pattern: "\\*"
+  input: "*"
+  want: true
+
+- pattern: "\\*"
+  input: foo
+  want: false
+
+- pattern: "\\?"
+  input: "?"
+  want: true
+
+- pattern: "\\?"
+  input: f
+  want: false
+
+- pattern: "\\[a-z]"
+  input: "[a-z]"
+  want: true
+
+- pattern: "\\[a-z]"
+  input: a
+  want: false
+
+- pattern: "\\foo"
+  input: foo
+  want: true
+
+- pattern: "\\わ"
+  input: わ
+  want: true
+
+
+# Unless FNM_NOESCAPE is given
+- pattern: "\\\\"
+  input: "\\"
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: false
+
+- pattern: "\\\\"
+  input: "\\\\"
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: true
+
+- pattern: "\\*"
+  input: foo
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: false
+
+- pattern: "\\*"
+  input: "\\*"
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: true

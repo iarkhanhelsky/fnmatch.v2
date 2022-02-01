@@ -1,0 +1,22 @@
+# When flags include FNM_PERIOD a '?' might not match a '.' character.
+- pattern: "?"
+  input: "."
+  flags:
+    - fnmatch.FNM_PERIOD
+  want: false
+- pattern: "foo?"
+  input: "foo."
+  flags:
+    - fnmatch.FNM_PERIOD
+  want: true
+- pattern: "/?"
+  input: "/."
+  flags:
+    - fnmatch.FNM_PERIOD
+  want: true
+- pattern: "/?"
+  input: "/."
+  flags:
+    - fnmatch.FNM_PERIOD
+    - fnmatch.FNM_PATHNAME
+  want: false

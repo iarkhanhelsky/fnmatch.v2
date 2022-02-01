@@ -1,0 +1,34 @@
+# Should match / when flags are 0
+- pattern: "*"
+  input: "foo/bar"
+  want: true
+- pattern: "*"
+  input: "/"
+  want: true
+- pattern: "*"
+  input: "/foo"
+  want: true
+- pattern: "*"
+  input: "foo/"
+  want: true
+# Shouldnt match / when flags include FNM_PATHNAME
+- pattern: "*" 
+  input: "foo/bar"
+  flags:
+    - fnmatch.FNM_PATHNAME
+  want: false
+- pattern: "*" 
+  input: "/"
+  flags:
+    - fnmatch.FNM_PATHNAME
+  want: false
+- pattern: "*" 
+  input: "/foo"
+  flags:
+    - fnmatch.FNM_PATHNAME
+  want: false
+- pattern: "*" 
+  input: "foo/"
+  flags:
+    - fnmatch.FNM_PATHNAME
+  want: false

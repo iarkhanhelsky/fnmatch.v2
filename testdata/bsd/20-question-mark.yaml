@@ -1,0 +1,32 @@
+# A question mark pattern "?" should match a single character
+- pattern: "?"
+  input: ""
+  want: false
+- pattern: "?"
+  input: "f"
+  want: true
+- pattern: "?"
+  input: "."
+  want: true
+- pattern: "?"
+  input: "?"
+  want: true
+- pattern: "?"
+  input: "foo"
+  want: false
+- pattern: "?"
+  input: "わ"
+  want: true
+- pattern: "?"
+  input: "わた"
+  want: false
+# Even '/' when flags are 0
+- pattern: "?"
+  input: "/"
+  want: true
+# Except '/' when flags include FNM_PATHNAME
+- pattern: "?"
+  input: "/"
+  flags:
+    - fnmatch.FNM_PATHNAME
+  want: false

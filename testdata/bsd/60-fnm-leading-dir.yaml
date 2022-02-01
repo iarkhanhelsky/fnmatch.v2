@@ -1,0 +1,23 @@
+# FNM_LEADING_DIR should ignore trailing '/*'
+- pattern: foo
+  input: foo/bar
+  want: false
+
+- pattern: foo
+  input: foo/bar
+  flags:
+  - fnmatch.FNM_LEADING_DIR
+  want: true
+
+- pattern: "*"
+  input: foo/bar
+  flags:
+  - fnmatch.FNM_PATHNAME
+  want: false
+
+- pattern: "*"
+  input: foo/bar
+  flags:
+  - fnmatch.FNM_PATHNAME
+  - fnmatch.FNM_LEADING_DIR
+  want: true

@@ -1,0 +1,190 @@
+# Should match a single character inside its range
+- pattern: "[a-z]"
+  input: a
+  want: true
+
+- pattern: "[a-z]"
+  input: q
+  want: true
+
+- pattern: "[a-z]"
+  input: z
+  want: true
+
+- pattern: "[わ]"
+  input: わ
+  want: true
+
+
+# Should not match characters outside its range
+- pattern: "[a-z]"
+  input: "-"
+  want: false
+
+- pattern: "[a-z]"
+  input: " "
+  want: false
+
+- pattern: "[a-z]"
+  input: D
+  want: false
+
+- pattern: "[a-z]"
+  input: é
+  want: false
+
+
+# Should only match one character
+- pattern: "[a-z]"
+  input: ab
+  want: false
+
+- pattern: "[a-z]"
+  input: ''
+  want: false
+
+
+# Should not consume more of the pattern than necessary
+- pattern: "[a-z]foo"
+  input: afoo
+  want: true
+
+
+# Should match '-' if it is the first/last character or is
+# backslash escaped
+- pattern: "[-az]"
+  input: "-"
+  want: true
+
+- pattern: "[-az]"
+  input: a
+  want: true
+
+- pattern: "[-az]"
+  input: b
+  want: false
+
+- pattern: "[az-]"
+  input: "-"
+  want: true
+
+- pattern: "[a\\-z]"
+  input: "-"
+  want: true
+
+- pattern: "[a\\-z]"
+  input: b
+  want: false
+
+
+# ignore '\\' when FNM_NOESCAPE is given
+- pattern: "[a\\-z]"
+  input: "\\"
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: true
+
+- pattern: "[a\\-z]"
+  input: "-"
+  flags:
+  - fnmatch.FNM_NOESCAPE
+  want: false
+
+
+# Should be negated if starting with ^ or !"
+- pattern: "[^a-z]"
+  input: a
+  want: false
+
+- pattern: "[!a-z]"
+  input: b
+  want: false
+
+- pattern: "[!a-z]"
+  input: é
+  want: true
+
+- pattern: "[!a-z]"
+  input: わ
+  want: true
+
+
+# Still match '-' if following the negation character
+- pattern: "[^-az]"
+  input: "-"
+  want: false
+
+- pattern: "[^-az]"
+  input: b
+  want: true
+
+
+# Should support multiple characters/ranges
+- pattern: "[abc]"
+  input: a
+  want: true
+
+- pattern: "[abc]"
+  input: c
+  want: true
+
+- pattern: "[abc]"
+  input: d
+  want: false
+
+- pattern: "[a-cg-z]"
+  input: c
+  want: true
+
+- pattern: "[a-cg-z]"
+  input: h
+  want: true
+
+- pattern: "[a-cg-z]"
+  input: d
+  want: false
+
+
+# Should not match '/' when flags is FNM_PATHNAME
+- pattern: "[abc/def]"
+  input: "/"
+  want: true
+
+- pattern: "[abc/def]"
+  input: "/"
+  flags:
+  - fnmatch.FNM_PATHNAME
+  want: false
+
+- pattern: "[.-0]"
+  input: "/"
+  want: true
+
+- pattern: "[.-0]"
+  input: "/"
+  flags:
+  - fnmatch.FNM_PATHNAME
+  want: false
+
+
+# Should normally be case-sensitive
+- pattern: "[a-z]"
+  input: A
+  want: false
+
+- pattern: "[A-Z]"
+  input: a
+  want: false
+
+# Except when FNM_CASEFOLD is given
+- pattern: "[a-z]"
+  input: A
+  flags:
+  - fnmatch.FNM_CASEFOLD
+  want: true
+
+- pattern: "[A-Z]"
+  input: a
+  flags:
+  - fnmatch.FNM_CASEFOLD
+  want: true

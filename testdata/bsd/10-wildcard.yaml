@@ -1,0 +1,18 @@
+- pattern: "*"
+  input: "" 
+  want: true
+- pattern: "*"
+  input: "foo"
+  want: true
+- pattern: "*"
+  input: "*"
+  want: true
+- pattern: "*"
+  input: "   "
+  want: true
+- pattern: "*"
+  input: ".foo"
+  want: true
+- pattern: "*"
+  input: "わたし"
+  want: true

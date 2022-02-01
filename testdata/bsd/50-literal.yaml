@@ -1,0 +1,33 @@
+# Literal characters should match themselves
+- pattern: foo
+  input: foo
+  want: true
+
+- pattern: foo
+  input: foobar
+  want: false
+
+- pattern: foobar
+  input: foo
+  want: false
+
+- pattern: foo
+  input: Foo
+  want: false
+
+- pattern: わたし
+  input: わたし
+  want: true
+
+# And perform case-folding when FNM_CASEFOLD is given
+- pattern: foo
+  input: FOO
+  flags:
+  - fnmatch.FNM_CASEFOLD
+  want: true
+
+- pattern: FoO
+  input: fOo
+  flags:
+  - fnmatch.FNM_CASEFOLD
+  want: true
