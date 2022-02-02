@@ -74,8 +74,6 @@ func Match(pattern string, str string, flags int) bool {
 }
 
 func fnmatchHelper(pattern string, str string, flags int) bool {
-	period := !hasFlag(flags, FNM_DOTMATCH)
-
 	px := 0
 	sx := 0
 
@@ -85,20 +83,20 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 	var prn, srn rune
 	var psz, ssz int
 
-	if period && str[sx] == '.' && pattern[unescape(px, pattern, flags)] != '.' {
+	if !hasFlag(flags, FNM_DOTMATCH) && str[sx] == '.' && pattern[unescape(px, pattern, flags)] != '.' {
 		return false
 	}
 
 	for {
 		switch pattern[px] {
 		case '*':
-			for pattern[px] == '*' {
+			for px < len(pattern) && pattern[px] == '*' {
 				px++
 			}
 
 			if isEnd(unescape(px, pattern, flags), pattern, flags) {
 				px = unescape(px, pattern, flags)
-				return false
+				return true
 			}
 
 			if isEnd(sx, str, flags) {
@@ -131,6 +129,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 		if psz == ssz && prn == srn {
 			px += psz
 			sx += ssz
+			continue
 		}
 
 		if !hasFlag(flags, FNM_CASEFOLD) {
@@ -161,6 +160,10 @@ func hasFlag(mask int, flag int) bool {
 }
 
 func unescape(p int, pattern string, flags int) int {
+	if p >= len(pattern) {
+		return p
+	}
+
 	if !hasFlag(flags, FNM_NOESCAPE) && pattern[p] == '\\' {
 		return p + 1
 	}
@@ -168,6 +171,6 @@ func unescape(p int, pattern string, flags int) int {
 	return p
 }
 
-func isEnd(p int, pattern string, flags int) bool {
-	return p >= len(pattern) || (hasFlag(flags, FNM_PATHNAME) && pattern[p] == '/')
+func isEnd(p int, str string, flags int) bool {
+	return p >= len(str) || (hasFlag(flags, FNM_PATHNAME) && str[p] == '/')
 }
