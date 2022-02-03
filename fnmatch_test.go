@@ -21,7 +21,17 @@ type testCase struct {
 
 func (tc testCase) assert(t *testing.T) {
 	r := fnmatch.Match(tc.Pattern, tc.Input, tc.flagMap())
-	assert.Equal(t, tc.Want, r)
+	assert.Equal(t, tc.Want, r, tc.string())
+}
+
+func (tc testCase) string() string {
+	flags := "0"
+	if len(tc.Flags) > 0 {
+		flags = strings.Join(tc.Flags, " | ")
+	}
+
+	return fmt.Sprintf("fnmatch('%s', '%s', %s) -> %t",
+		tc.Pattern, tc.Input, flags, tc.Want)
 }
 
 func (tc testCase) flagMap() int {
