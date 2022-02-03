@@ -98,4 +98,6 @@ func TestAll(t *testing.T) {
 
 func TestManual(t *testing.T) {
 	testCase{Pattern: "a/*", Input: "a/bc", Want: true}.assert(t)
+	testCase{Pattern: "*", Input: "", Want: true}.assert(t)
+	testCase{Pattern: "?", Input: "", Want: false}.assert(t)
 }

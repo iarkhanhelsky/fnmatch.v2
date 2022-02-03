@@ -83,14 +83,14 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 	var prn, srn rune
 	var psz, ssz int
 
-	if !hasFlag(flags, FNM_DOTMATCH) && str[sx] == '.' && pattern[unescape(px, pattern, flags)] != '.' {
+	if !hasFlag(flags, FNM_DOTMATCH) && charAt(sx, str) == '.' && charAt(unescape(px, pattern, flags), pattern) != '.' {
 		return false
 	}
 
 	for {
-		switch pattern[px] {
+		switch charAt(px, pattern) {
 		case '*':
-			for px < len(pattern) && pattern[px] == '*' {
+			for charAt(px, pattern) == '*' {
 				px++
 			}
 
@@ -111,7 +111,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 			}
 
 			px++
-			_, ssz = utf8.DecodeRuneInString(str[stmp:])
+			_, ssz = utf8.DecodeRuneInString(str[sx:])
 			sx += ssz
 			continue
 		}
@@ -173,4 +173,12 @@ func unescape(p int, pattern string, flags int) int {
 
 func isEnd(p int, str string, flags int) bool {
 	return p >= len(str) || (hasFlag(flags, FNM_PATHNAME) && str[p] == '/')
+}
+
+func charAt(idx int, str string) uint8 {
+	if idx >= len(str) {
+		return 0
+	}
+
+	return str[idx]
 }
