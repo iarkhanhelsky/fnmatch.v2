@@ -114,6 +114,19 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 			_, ssz = utf8.DecodeRuneInString(str[sx:])
 			sx += ssz
 			continue
+		case '[':
+			if isEnd(sx, str, flags) {
+				return false
+			}
+
+			if tx, ok := bracketMatch(px+1, pattern, sx, str, flags); ok {
+				px = tx
+				_, ssz = utf8.DecodeRuneInString(str[sx:])
+				sx += ssz
+				continue
+			}
+
+			goto failed
 		}
 
 		px = unescape(px, pattern, flags)
@@ -154,6 +167,108 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 
 		return false
 	}
+}
+
+func bracketMatch(px int, pattern string, sx int, str string, flags int) (int, bool) {
+	var ok, not int
+	if px >= len(pattern) {
+		return 0, false
+	}
+
+	if pattern[px] == '!' || pattern[px] == '^' {
+		not = 1
+		px++
+	}
+
+	var t1rn, t2rn rune
+	var t1sz, t2sz int
+	for pattern[px] != ']' {
+		t1 := px
+		if !hasFlag(flags, FNM_NOESCAPE) && charAt(t1, pattern) == '\\' {
+			t1++
+		}
+
+		if t1 >= len(pattern) {
+			return 0, false
+		}
+
+		t1rn, t1sz = utf8.DecodeRuneInString(pattern[t1:])
+		px = t1 + t1sz
+		if px >= len(pattern) {
+			return 0, false
+		}
+
+		if charAt(px, pattern) == '-' && charAt(px+1, pattern) != ']' {
+			t2 := px + 1
+
+			if !hasFlag(flags, FNM_NOESCAPE) && charAt(t2, pattern) == '\\' {
+				t2++
+			}
+
+			if t2 >= len(pattern) {
+				return 0, false
+			}
+
+			t2rn, t2sz = utf8.DecodeRuneInString(pattern[t2:])
+			px = t2 + t2sz
+			if ok > 0 {
+				continue
+			}
+
+			srn, ssz := utf8.DecodeRuneInString(str[sx:])
+			if (t1sz == ssz && t1rn == srn) || (t2sz == ssz && t2rn == srn) {
+				ok = 1;
+				continue
+			}
+
+			trn, _ := utf8.DecodeRuneInString(pattern[t1:])
+			if hasFlag(flags, FNM_CASEFOLD) {
+				srn = unicode.ToUpper(srn)
+				trn = unicode.ToUpper(trn)
+			}
+			if srn < trn {
+				continue
+			}
+
+			trn, _ = utf8.DecodeRuneInString(pattern[t2:])
+			if hasFlag(flags, FNM_CASEFOLD) {
+				trn = unicode.ToUpper(trn)
+			}
+			if srn > trn {
+				continue
+			}
+
+		} else {
+			if ok > 0 {
+				continue
+			}
+
+			srn, ssz := utf8.DecodeRuneInString(str[sx:])
+			if t1sz == ssz && t1rn == srn {
+				ok = 1
+				continue
+			}
+
+			if !hasFlag(flags, FNM_CASEFOLD) {
+				continue
+			}
+
+			prn, _ := utf8.DecodeRuneInString(pattern[px:])
+			prn = unicode.ToUpper(prn)
+			srn = unicode.ToUpper(srn)
+
+			if prn != srn {
+				continue
+			}
+		}
+		ok = 1;
+	}
+
+	if ok == not {
+		return 0, false
+	}
+
+	return px + 1, true
 }
 
 func hasFlag(mask int, flag int) bool {
