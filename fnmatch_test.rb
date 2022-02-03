@@ -9,6 +9,18 @@ class FnFixture
     @input = hash['input']
     @flags = convert_flags(hash['flags'])
     @want = hash['want']
+    @hash = hash
+  end
+
+  def to_s
+    flags = @hash['flags'] || []
+    if flags.size > 0 
+      flags = flags.join(' | ')
+    else
+      flags = '0'
+    end
+
+    "fnmatch('#{@pattern}', '#{@input}', #{flags}) => #{@want}"
   end
   
   def convert_flags(list)
@@ -50,7 +62,8 @@ class TestFnmatch < Test::Unit::TestCase
 
     fixtures.each.with_index do |f, i|
       define_method "#{test_name}_#{i}".to_sym do
-        assert_equal f.want, f.fnmatch
+        desc = "fnmatch('#{}')"
+        assert_equal f.want, f.fnmatch, f.to_s
       end
     end
   end
