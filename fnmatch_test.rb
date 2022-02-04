@@ -15,7 +15,7 @@ class FnFixture
   def to_s
     flags = @hash['flags'] || []
     if flags.size > 0 
-      flags = flags.join(' | ')
+      flags = flags.join(' | ').gsub('fnmatch.', 'File::')
     else
       flags = '0'
     end
@@ -55,10 +55,10 @@ class FnFixture
 end
 
 class TestFnmatch < Test::Unit::TestCase
-  Dir["testdata/bsd/*.yaml"].each do |file|
-
+  Dir["testdata/*/*.yaml"].each do |file|
     fixtures = YAML.load(IO.read(file)).map { |c| FnFixture.new(c) }
-    test_name = 'test_' + File.basename(file).tr('-.', '_')
+    suite = File.basename(File.dirname(file))
+    test_name = "test_#{suite}_#{File.basename(file).tr('-.', '_')}"
 
     fixtures.each.with_index do |f, i|
       define_method "#{test_name}_#{i}".to_sym do
