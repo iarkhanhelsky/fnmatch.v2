@@ -61,22 +61,35 @@ func (tc testCase) flagMap() int {
 }
 
 func setupTest(t *testing.T) map[string][]testCase {
-	files, err := ioutil.ReadDir("testdata/bsd")
+	files, err := ioutil.ReadDir("testdata")
 	if err != nil {
 		t.Error(err)
 	}
 
 	testcases := make(map[string][]testCase)
-	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".yaml") {
-			cases, err := readTestCases(t, path.Join("testdata/bsd", file.Name()))
-			if err != nil {
-				t.Error(err)
-			}
+	for _, f := range files {
+		if !f.IsDir() {
+			continue
+		}
 
-			testcases[file.Name()] = cases
+		dir := f.Name()
+		files, err := ioutil.ReadDir(path.Join("testdata", dir))
+		if err != nil {
+			t.Error(err)
+		}
+
+		for _, file := range files {
+			if strings.HasSuffix(file.Name(), ".yaml") {
+				cases, err := readTestCases(t, path.Join("testdata", dir, file.Name()))
+				if err != nil {
+					t.Error(err)
+				}
+
+				testcases[dir+"_"+file.Name()] = cases
+			}
 		}
 	}
+
 	return testcases
 }
 
