@@ -65,9 +65,53 @@ const (
 func Match(pattern string, str string, flags int) bool {
 	pathname := hasFlag(flags, FNM_PATHNAME)
 
+	px := 0
+	sx := 0
+
+	ptmp := -1
+	stmp := -1
+
 	if pathname {
-		// TODO
-		return false
+		for {
+			for charAt(px, pattern) == '*' && charAt(px+1, pattern) == '*' && charAt(px+2, pattern) == '/' {
+				px += 3
+				ptmp = px
+				stmp = sx
+			}
+
+			if fnmatchHelper(pattern[px:], str[sx:], flags) {
+				for charAt(sx, str) != '/' {
+					_, ssz := utf8.DecodeRuneInString(str[sx:])
+					sx += ssz
+				}
+
+				if px < len(pattern) && sx < len(str) {
+					px++
+					sx++
+					continue
+				}
+
+				if px >= len(pattern) && sx >= len(pattern) {
+					return true
+				}
+			}
+
+			if ptmp > 0 && stmp > 0 && !(!hasFlag(flags, FNM_DOTMATCH) && charAt(stmp, str) == '.') {
+				for charAt(stmp, str) != '/' {
+					_, ssz := utf8.DecodeRuneInString(str[sx:])
+					stmp += ssz
+				}
+
+				if stmp < len(str) {
+					px = ptmp
+					stmp++
+					sx = stmp
+					continue
+				}
+			}
+
+			return false
+		}
 	}
 
 	return fnmatchHelper(pattern, str, flags)
@@ -217,7 +261,7 @@ func bracketMatch(px int, pattern string, sx int, str string, flags int) (int, b
 
 			srn, ssz := utf8.DecodeRuneInString(str[sx:])
 			if (t1sz == ssz && t1rn == srn) || (t2sz == ssz && t2rn == srn) {
-				ok = 1;
+				ok = 1
 				continue
 			}
 
@@ -261,7 +305,7 @@ func bracketMatch(px int, pattern string, sx int, str string, flags int) (int, b
 				continue
 			}
 		}
-		ok = 1;
+		ok = 1
 	}
 
 	if ok == not {
