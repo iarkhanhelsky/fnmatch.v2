@@ -1,0 +1,11 @@
+- pattern: cat
+  input: cat
+  want: true
+
+- pattern: cat
+  input: category
+  want: false
+
+- pattern: cat
+  input: wildcat
+  want: false

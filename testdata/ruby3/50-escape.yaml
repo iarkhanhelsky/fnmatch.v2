@@ -1,0 +1,59 @@
+- pattern: "\\?"
+  input: "?"
+  want: true
+
+- pattern: "\\?"
+  input: "\\?"
+  want: false
+
+- pattern: "\\?"
+  input: a
+  want: false
+
+- pattern: "\\?"
+  input: "\\a"
+  want: false
+
+- pattern: "\\*"
+  input: "*"
+  want: true
+
+- pattern: "\\*"
+  input: "\\*"
+  want: false
+
+- pattern: "\\*"
+  input: cats
+  want: false
+
+- pattern: "\\*"
+  input: "\\cats"
+  want: false
+
+- pattern: "\\a"
+  input: a
+  want: true
+
+- pattern: "\\a"
+  input: "\\a"
+  want: false
+
+- pattern: "[a\\-c]"
+  input: a
+  want: true
+
+- pattern: "[a\\-c]"
+  input: "-"
+  want: true
+
+- pattern: "[a\\-c]"
+  input: c
+  want: true
+
+- pattern: "[a\\-c]"
+  input: b
+  want: false
+
+- pattern: "[a\\-c]"
+  input: "\\"
+  want: false

@@ -1,0 +1,90 @@
+# escaping character loses its meaning if FNM_NOESCAPE is set
+- pattern: "\\?"
+  input: "?"
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\?"
+  input: "\\?"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\?"
+  input: a
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\?"
+  input: "\\a"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\*"
+  input: "*"
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\*"
+  input: "\\*"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\*"
+  input: cats
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\*"
+  input: "\\cats"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\a"
+  input: a
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "\\a"
+  input: "\\a"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "[a\\-c]"
+  input: a
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "[a\\-c]"
+  input: "-"
+  want: false
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "[a\\-c]"
+  input: c
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "[a\\-c]"
+  input: b
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE
+
+- pattern: "[a\\-c]"
+  input: "\\"
+  want: true
+  flags:
+  - fnmatch.FNM_NOESCAPE

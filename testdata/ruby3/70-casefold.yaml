@@ -1,0 +1,30 @@
+# case is ignored if FNM_CASEFOLD is set
+- pattern: cat
+  input: CAT
+  want: false
+
+- pattern: cat
+  input: CAT
+  want: true
+  flags:
+  - fnmatch.FNM_CASEFOLD
+
+- pattern: "[a-z]"
+  input: D
+  want: false
+
+- pattern: "[a-z]"
+  input: D
+  want: true
+  flags:
+  - fnmatch.FNM_CASEFOLD
+
+- pattern: "[abc]"
+  input: B
+  want: false
+
+- pattern: "[abc]"
+  input: B
+  want: true
+  flags:
+  - fnmatch.FNM_CASEFOLD

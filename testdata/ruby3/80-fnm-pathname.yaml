@@ -1,0 +1,20 @@
+# wildcard doesn't match '/' if FNM_PATHNAME is set
+- pattern: foo?boo
+  input: foo/boo
+  want: true
+
+- pattern: foo*
+  input: foo/boo
+  want: true
+
+- pattern: foo?boo
+  input: foo/boo
+  want: false
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: foo*
+  input: foo/boo
+  want: false
+  flags:
+  - fnmatch.FNM_PATHNAME

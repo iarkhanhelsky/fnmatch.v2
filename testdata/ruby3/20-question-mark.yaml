@@ -1,0 +1,27 @@
+- pattern: "?at"
+  input: cat
+  want: true
+
+- pattern: c?t
+  input: cat
+  want: true
+
+- pattern: ca?
+  input: cat
+  want: true
+
+- pattern: "?a?"
+  input: cat
+  want: true
+
+- pattern: c??t
+  input: cat
+  want: false
+
+- pattern: "??at"
+  input: cat
+  want: false
+
+- pattern: ca??
+  input: cat
+  want: false

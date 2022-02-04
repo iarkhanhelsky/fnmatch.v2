@@ -1,0 +1,35 @@
+# wildcard matches leading period if FNM_DOTMATCH is set
+- pattern: "*"
+  input: ".profile"
+  want: false
+
+- pattern: "*"
+  input: ".profile"
+  want: true
+  flags:
+  - fnmatch.FNM_DOTMATCH
+
+- pattern: ".*"
+  input: ".profile"
+  want: true
+
+- pattern: "*"
+  input: dave/.profile
+  want: true
+
+- pattern: "*/*"
+  input: dave/.profile
+  want: true
+
+- pattern: "*/*"
+  input: dave/.profile
+  want: false
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "*/*"
+  input: dave/.profile
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+  - fnmatch.FNM_DOTMATCH

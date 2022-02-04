@@ -1,0 +1,39 @@
+- pattern: c*
+  input: cats
+  want: true
+
+- pattern: c*ts
+  input: cats
+  want: true
+
+- pattern: "*ts"
+  input: cats
+  want: true
+
+- pattern: "*c*a*t*s*"
+  input: cats
+  want: true
+
+- pattern: c*t
+  input: cats
+  want: false
+
+- pattern: "*abc"
+  input: abcabz
+  want: false
+
+- pattern: "*abz"
+  input: abcabz
+  want: true
+
+- pattern: a*abc
+  input: abc
+  want: false
+
+- pattern: a*bc
+  input: abc
+  want: true
+
+- pattern: a*bc
+  input: abcd
+  want: false

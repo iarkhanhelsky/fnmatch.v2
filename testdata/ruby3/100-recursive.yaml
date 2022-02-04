@@ -1,0 +1,37 @@
+# recursive matching
+- pattern: "**/foo"
+  input: a/b/c/foo
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "**/foo"
+  input: "/foo"
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "**/foo"
+  input: a/.b/c/foo
+  want: false
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "**/foo"
+  input: a/.b/c/foo
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+  - fnmatch.FNM_DOTMATCH
+
+- pattern: "**/foo"
+  input: "/root/foo"
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "**/foo"
+  input: c:/root/foo
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME

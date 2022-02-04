@@ -1,0 +1,29 @@
+- pattern: "\\[1\\]"
+  input: "[1]"
+  want: true
+
+- pattern: "*?"
+  input: a
+  want: true
+
+- pattern: "*/"
+  input: a/
+  want: true
+
+- pattern: "\\[1\\]"
+  input: "[1]"
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "*?"
+  input: a
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
+
+- pattern: "*/"
+  input: a/
+  want: true
+  flags:
+  - fnmatch.FNM_PATHNAME
