@@ -80,7 +80,7 @@ func Match(pattern string, str string, flags int) bool {
 			}
 
 			if fnmatchHelper(pattern[px:], str[sx:], flags) {
-				for charAt(sx, str) != '/' {
+				for sx < len(str) && charAt(sx, str) != '/' {
 					_, ssz := utf8.DecodeRuneInString(str[sx:])
 					sx += ssz
 				}
@@ -97,8 +97,8 @@ func Match(pattern string, str string, flags int) bool {
 			}
 
 			if ptmp > 0 && stmp > 0 && !(!hasFlag(flags, FNM_DOTMATCH) && charAt(stmp, str) == '.') {
-				for charAt(stmp, str) != '/' {
-					_, ssz := utf8.DecodeRuneInString(str[sx:])
+				for stmp < len(str) && charAt(stmp, str) != '/' {
+					_, ssz := utf8.DecodeRuneInString(str[stmp:])
 					stmp += ssz
 				}
 
