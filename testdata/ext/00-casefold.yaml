@@ -1,0 +1,11 @@
+- pattern: 'abc'
+  input: 'ABC'
+  flags:
+    - fnmatch.FNM_CASEFOLD
+  want: true
+
+- pattern: 'abc'
+  input: 'ABD'
+  flags:
+    - fnmatch.FNM_CASEFOLD
+  want: false
