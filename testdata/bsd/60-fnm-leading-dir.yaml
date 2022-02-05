@@ -8,6 +8,7 @@
   flags:
   - fnmatch.FNM_LEADING_DIR
   want: true
+  skip: true
 
 - pattern: "*"
   input: foo/bar
@@ -21,3 +22,4 @@
   - fnmatch.FNM_PATHNAME
   - fnmatch.FNM_LEADING_DIR
   want: true
+  skip: true

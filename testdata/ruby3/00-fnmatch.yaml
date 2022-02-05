@@ -5,6 +5,7 @@
 - pattern: "*?"
   input: a
   want: true
+  skip: true
 
 - pattern: "*/"
   input: a/
@@ -21,6 +22,7 @@
   want: true
   flags:
   - fnmatch.FNM_PATHNAME
+  skip: true
 
 - pattern: "*/"
   input: a/

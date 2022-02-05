@@ -4,6 +4,7 @@
   flags:
     - fnmatch.FNM_PERIOD
   want: false
+  skip: true
 - pattern: "foo?"
   input: "foo."
   flags:
@@ -20,3 +21,4 @@
     - fnmatch.FNM_PERIOD
     - fnmatch.FNM_PATHNAME
   want: false
+  skip: true

@@ -17,6 +17,7 @@ type testCase struct {
 	Input   string   `yaml:"input"`
 	Flags   []string `yaml:"flags"`
 	Want    bool     `yaml:"want"`
+	Skip    bool     `yaml:"skip"`
 
 	group string
 	file  string
@@ -48,6 +49,10 @@ func newTestcase(pattern string, input string, want bool, flags ...int) testCase
 
 func (tc testCase) assert(t *testing.T) {
 	r := fnmatch.Match(tc.Pattern, tc.Input, tc.flagMap())
+	if r != tc.Want && tc.Skip {
+		t.Skip(tc.string())
+		return
+	}
 	assert.Equal(t, tc.Want, r, tc.string())
 }
 

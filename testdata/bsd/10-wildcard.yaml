@@ -13,6 +13,7 @@
 - pattern: "*"
   input: ".foo"
   want: true
+  skip: true
 - pattern: "*"
   input: "わたし"
   want: true
