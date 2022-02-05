@@ -57,7 +57,7 @@ class FnFixture
 end
 
 class TestFnmatch < Test::Unit::TestCase
-  Dir["testdata/*/*.yaml"].each do |file|
+  Dir[File.join(__dir__, "testdata/*/*.yaml")].each do |file|
     fixtures = YAML.load(IO.read(file)).map { |c| FnFixture.new(c) }
     suite = File.basename(File.dirname(file))
     test_name = "test_#{suite}_#{File.basename(file).tr('-.', '_')}"
