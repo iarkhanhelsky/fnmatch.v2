@@ -57,6 +57,8 @@ func (tc testCase) flagMap() int {
 			flags |= fnmatch.FNM_PATHNAME
 		case "fnmatch.FNM_PERIOD":
 			flags |= fnmatch.FNM_PERIOD
+		case "fnmatch.FNM_DOTMATCH":
+			flags |= fnmatch.FNM_DOTMATCH
 		case "fnmatch.FNM_LEADING_DIR":
 			flags |= fnmatch.FNM_LEADING_DIR
 		case "fnmatch.FNM_CASEFOLD":
@@ -65,6 +67,8 @@ func (tc testCase) flagMap() int {
 			flags |= fnmatch.FNM_IGNORECASE
 		case "fnmatch.FNM_FILE_NAME":
 			flags |= fnmatch.FNM_FILE_NAME
+		default:
+			panic(f)
 		}
 	}
 	return flags

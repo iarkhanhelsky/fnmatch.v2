@@ -29,31 +29,6 @@ const (
 	// FNM_CASEFOLD If this flag (a GNU extension) is set, the pattern is
 	// matched case-insensitively.
 	FNM_CASEFOLD
-	// FNM_EXTMATCH
-	// If this flag (a GNU extension) is set, extended patterns
-	// are supported, as introduced by 'ksh' and now supported by
-	// other shells.  The extended format is as follows, with
-	// pattern-list being a '|' separated list of patterns.
-	//
-	//	'?(pattern-list)'
-	//		The pattern matches if zero or one occurrences of any of
-	//		the patterns in the pattern-list match the input string.
-	//
-	//  '*(pattern-list)'
-	//		The pattern matches if zero or more occurrences of any of
-	//		the patterns in the pattern-list match the input string.
-	//	'+(pattern-list)'
-	//		The pattern matches if one or more occurrences of any of
-	//		the patterns in the pattern-list match the input string.
-	//
-	// 	'@(pattern-list)'
-	//		The pattern matches if exactly one occurrence of any of
-	//		the patterns in the pattern-list match the input string.
-	//
-	//	'!(pattern-list)'
-	//		The pattern matches if the input string cannot be matched
-	//		with any of the patterns in the pattern-list.
-	FNM_EXTMATCH
 
 	FNM_DOTMATCH   = FNM_PERIOD
 	FNM_IGNORECASE = FNM_CASEFOLD
