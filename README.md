@@ -43,3 +43,4 @@ func main() {
 ## Notes 
 
 * https://research.swtch.com/glob
+* https://www.gnu.org/software/libc/manual/html_node/Wildcard-Matching.html
