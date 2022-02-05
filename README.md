@@ -12,8 +12,6 @@ go get github.com/iarkhanhelsky/fnmatch.v2
 ## Example
 
 ```
-package example
-
 import "github.com/iarkhanhelsky/fnmatch.v2"
 
 func main() {
