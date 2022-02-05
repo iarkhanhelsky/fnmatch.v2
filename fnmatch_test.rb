@@ -33,7 +33,7 @@ class FnFixture
         flags |= File::FNM_NOESCAPE
       when 'fnmatch.FNM_PATHNAME'
           flags |= File::FNM_PATHNAME
-      when 'fnmatch.FNM_PERIOD'
+      when 'fnmatch.FNM_PERIOD', 'fnmatch.FNM_DOTMATCH'
           flags |= File::FNM_DOTMATCH
       when 'fnmatch.FNM_LEADING_DIR'
           # flags |= File::FNM_LEADING_DIR
@@ -43,6 +43,8 @@ class FnFixture
           flags |= File::FNM_IGNORECASE
       when 'fnmatch.FNM_FILE_NAME'
           flags |= File::FNM_FILE_NAME
+      else
+        fail f
       end
     end
     
