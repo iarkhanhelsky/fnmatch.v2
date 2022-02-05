@@ -23,6 +23,29 @@ type testCase struct {
 	index int
 }
 
+func newTestcase(pattern string, input string, want bool, flags ...int) testCase {
+	stringflags := []string{}
+	for _, f := range flags {
+		switch f {
+		case fnmatch.FNM_NOESCAPE:
+			stringflags = append(stringflags, "fnmatch.FNM_NOESCAPE")
+		case fnmatch.FNM_PATHNAME:
+			stringflags = append(stringflags, "fnmatch.FNM_PATHNAME")
+		case fnmatch.FNM_PERIOD:
+			stringflags = append(stringflags, "fnmatch.FNM_PERIOD")
+		case fnmatch.FNM_LEADING_DIR:
+			stringflags = append(stringflags, "fnmatch.FNM_LEADING_DIR")
+		case fnmatch.FNM_CASEFOLD:
+			stringflags = append(stringflags, "fnmatch.FNM_CASEFOLD")
+		default:
+			panic(f)
+		}
+	}
+	return testCase{
+		Pattern: pattern, Input: input, Want: want, Flags: stringflags,
+	}
+}
+
 func (tc testCase) assert(t *testing.T) {
 	r := fnmatch.Match(tc.Pattern, tc.Input, tc.flagMap())
 	assert.Equal(t, tc.Want, r, tc.string())
@@ -138,5 +161,5 @@ func TestAll(t *testing.T) {
 }
 
 func TestManual(t *testing.T) {
-	testCase{Pattern: "/?", Input: "/.", Flags: []string{"fnmatch.FNM_PATHNAME", "fnmatch.FNM_PERIOD"}, Want: false}.assert(t)
+	newTestcase("**/d", "a/b/c/d", true, fnmatch.FNM_PATHNAME).assert(t)
 }
