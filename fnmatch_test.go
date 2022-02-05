@@ -17,6 +17,10 @@ type testCase struct {
 	Input   string   `yaml:"input"`
 	Flags   []string `yaml:"flags"`
 	Want    bool     `yaml:"want"`
+
+	group string
+	file  string
+	index int
 }
 
 func (tc testCase) assert(t *testing.T) {
@@ -32,6 +36,12 @@ func (tc testCase) string() string {
 
 	return fmt.Sprintf("fnmatch('%s', '%s', %s) -> %t",
 		tc.Pattern, tc.Input, flags, tc.Want)
+}
+
+func (tc testCase) name() string {
+	s := fmt.Sprintf("test_%s_%s_%d", tc.group, tc.file, tc.index)
+	s = strings.Replace(strings.Replace(s, "-", "_", -1), ".", "_", -1)
+	return s
 }
 
 func (tc testCase) flagMap() int {
@@ -60,13 +70,13 @@ func (tc testCase) flagMap() int {
 	return flags
 }
 
-func setupTest(t *testing.T) map[string][]testCase {
+func setupTest(t *testing.T) []testCase {
 	files, err := ioutil.ReadDir("testdata")
 	if err != nil {
 		t.Error(err)
 	}
 
-	testcases := make(map[string][]testCase)
+	testcases := make([]testCase, 0)
 	for _, f := range files {
 		if !f.IsDir() {
 			continue
@@ -85,7 +95,13 @@ func setupTest(t *testing.T) map[string][]testCase {
 					t.Error(err)
 				}
 
-				testcases[dir+"_"+file.Name()] = cases
+				for i, tc := range cases {
+					tc.group = dir
+					tc.file = file.Name()
+					tc.index = i
+					testcases = append(testcases, tc)
+				}
+
 			}
 		}
 	}
@@ -110,16 +126,13 @@ func readTestCases(t *testing.T, path string) ([]testCase, error) {
 
 func TestAll(t *testing.T) {
 	testCases := setupTest(t)
-	for name, cases := range testCases {
-		for i, tc := range cases {
-			t.Run(fmt.Sprintf("%s-%d", name, i), func(t *testing.T) {
-				tc.assert(t)
-			})
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name(), func(t *testing.T) {
+			tc.assert(t)
+		})
 	}
 }
 
 func TestManual(t *testing.T) {
-	testCase{Pattern: "*.*", Input: "foo.txt", Want: true}.assert(t)
-	testCase{Pattern: "foo*.txt", Input: "foobar.txt", Want: true}.assert(t)
+	testCase{Pattern: "/?", Input: "/.", Flags: []string{"fnmatch.FNM_PATHNAME", "fnmatch.FNM_PERIOD"}, Want: false}.assert(t)
 }
