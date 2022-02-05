@@ -6,15 +6,13 @@ import (
 )
 
 func match(pattern string, str string, flags int) bool {
-	pathname := hasFlag(flags, FNM_PATHNAME)
-
 	px := 0
 	sx := 0
 
 	ptmp := -1
 	stmp := -1
 
-	if pathname {
+	if hasFlag(flags, FNM_PATHNAME) {
 		for {
 			for charAt(px, pattern) == '*' && charAt(px+1, pattern) == '*' && charAt(px+2, pattern) == '/' {
 				px += 3
