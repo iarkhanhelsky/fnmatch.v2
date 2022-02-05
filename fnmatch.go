@@ -287,12 +287,8 @@ func bracketMatch(px int, pattern string, sx int, str string, flags int) (int, b
 		}
 		ok = 1
 	}
-
-	if ok == not {
-		return 0, false
-	}
-
-	return px + 1, true
+	
+	return px + 1, ok != not
 }
 
 func hasFlag(mask int, flag int) bool {
