@@ -1,0 +1,3 @@
+- pattern: 'as*df?'
+  input: 'asdf'
+  want: false
