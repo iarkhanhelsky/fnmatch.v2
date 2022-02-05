@@ -70,7 +70,7 @@ func Match(pattern string, str string, flags int) bool {
 					continue
 				}
 
-				if px >= len(pattern) && sx >= len(pattern) {
+				if px >= len(pattern) && sx >= len(str) {
 					return true
 				}
 			}
