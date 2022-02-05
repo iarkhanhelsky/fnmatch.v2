@@ -79,7 +79,11 @@ func Match(pattern string, str string, flags int) bool {
 				stmp = sx
 			}
 
-			if fnmatchHelper(pattern[px:], str[sx:], flags) {
+			ok, tp, ts := fnmatchHelper(pattern[px:], str[sx:], flags)
+			px += tp
+			sx += ts
+
+			if ok {
 				for sx < len(str) && charAt(sx, str) != '/' {
 					_, ssz := utf8.DecodeRuneInString(str[sx:])
 					sx += ssz
@@ -114,10 +118,11 @@ func Match(pattern string, str string, flags int) bool {
 		}
 	}
 
-	return fnmatchHelper(pattern, str, flags)
+	ok, _, _ := fnmatchHelper(pattern, str, flags)
+	return ok
 }
 
-func fnmatchHelper(pattern string, str string, flags int) bool {
+func fnmatchHelper(pattern string, str string, flags int) (bool, int, int) {
 	px := 0
 	sx := 0
 
@@ -128,7 +133,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 	var psz, ssz int
 
 	if !hasFlag(flags, FNM_DOTMATCH) && charAt(sx, str) == '.' && charAt(unescape(px, pattern, flags), pattern) != '.' {
-		return false
+		return false, px, sx
 	}
 
 	for {
@@ -140,18 +145,18 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 
 			if isEnd(unescape(px, pattern, flags), pattern, flags) {
 				px = unescape(px, pattern, flags)
-				return true
+				return true, px, sx
 			}
 
 			if isEnd(sx, str, flags) {
-				return false
+				return false, px, sx
 			}
 
 			ptmp = px
 			stmp = sx
 		case '?':
 			if isEnd(sx, str, flags) {
-				return false
+				return false, px, sx
 			}
 
 			px++
@@ -160,7 +165,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 			continue
 		case '[':
 			if isEnd(sx, str, flags) {
-				return false
+				return false, px, sx
 			}
 
 			if tx, ok := bracketMatch(px+1, pattern, sx, str, flags); ok {
@@ -175,7 +180,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 
 		px = unescape(px, pattern, flags)
 		if isEnd(sx, str, flags) {
-			return isEnd(px, pattern, flags)
+			return isEnd(px, pattern, flags), px, sx
 		}
 		if isEnd(px, pattern, flags) {
 			goto failed
@@ -209,7 +214,7 @@ func fnmatchHelper(pattern string, str string, flags int) bool {
 			continue
 		}
 
-		return false
+		return false, px, sx
 	}
 }
 
