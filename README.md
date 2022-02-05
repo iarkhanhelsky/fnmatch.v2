@@ -1,6 +1,10 @@
-# (WIP) fnmatch.v2
+# fnmatch.v2
 
+## Installation
 
+```
+go get github.com/iarkhanhelsky/fnmatch.v2
+```
 
 ## See 
 *  
