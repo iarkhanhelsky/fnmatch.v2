@@ -9,6 +9,20 @@ and based on Ruby `File.fnmatch` implementation.
 go get github.com/iarkhanhelsky/fnmatch.v2
 ```
 
+## Example
+
+```
+package example
+
+import "github.com/iarkhanhelsky/fnmatch.v2"
+
+func main() {
+	if fnmatch.Match("foo/*", "foo/bar") {
+		println("Matched!")
+	}
+}
+```
+
 ## Features
 
 | Feature                        | fnmatch.v2         | golang             | fnmatch            | ruby | 
