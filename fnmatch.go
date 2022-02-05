@@ -75,7 +75,7 @@ func Match(pattern string, str string, flags int) bool {
 				}
 			}
 
-			if ptmp > 0 && stmp > 0 && !(!hasFlag(flags, FNM_DOTMATCH) && charAt(stmp, str) == '.') {
+			if ptmp >= 0 && stmp >= 0 && !(!hasFlag(flags, FNM_DOTMATCH) && charAt(stmp, str) == '.') {
 				for stmp < len(str) && charAt(stmp, str) != '/' {
 					_, ssz := utf8.DecodeRuneInString(str[stmp:])
 					stmp += ssz
