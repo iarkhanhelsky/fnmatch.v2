@@ -1,12 +1,85 @@
 package fnmatch
 
 import (
+	"strings"
 	"unicode"
 	"unicode/utf8"
 )
 
 func expandedMatch(pattern string, str string, flags int) bool {
-	return match(pattern, str, flags)
+	escape := !hasFlag(flags, FNM_NOESCAPE)
+
+	lbrace := -1
+	rbrace := -1
+	nest := 0
+	status := false
+
+	for px := 0; px < len(pattern); {
+		if charAt(px, pattern) == '{' {
+			if nest == 0 {
+				lbrace = px
+			}
+			nest++
+		}
+
+		if charAt(px, pattern) == '}' {
+			nest--
+			if nest == 0 {
+				rbrace = px
+				break
+			}
+		}
+
+		if charAt(px, pattern) == '\\' && escape {
+			px++
+			if px >= len(pattern) {
+				break
+			}
+		}
+
+		_, psz := utf8.DecodeRuneInString(pattern[px:])
+		px += psz
+	}
+
+	if lbrace >= 0 && rbrace >= 0 {
+		left := pattern[:lbrace]
+		right := pattern[rbrace+1:]
+
+		for px := lbrace; px < rbrace; {
+			px++
+			t := px
+			nest := 0
+			for px < rbrace && !(charAt(px, pattern) == ',' && nest == 0) {
+				switch charAt(px, pattern) {
+				case '{':
+					nest++
+				case '}':
+					nest--
+				case '\\':
+					if escape && px+1 == rbrace {
+						break
+					}
+				}
+
+				_, psz := utf8.DecodeRuneInString(pattern[px:])
+				px += psz
+			}
+
+			var sb strings.Builder
+			sb.WriteString(left)
+			sb.WriteString(pattern[t:px])
+			sb.WriteString(right)
+			npattern := sb.String()
+			status = expandedMatch(npattern, str, flags)
+			if status {
+				break
+			}
+		}
+	} else {
+		return match(pattern, str, flags)
+	}
+
+	return status
 }
 
 func match(pattern string, str string, flags int) bool {

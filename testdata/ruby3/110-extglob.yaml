@@ -8,8 +8,38 @@
     - fnmatch.FNM_EXTGLOB
   want: true
 
+- pattern: "{t,.g}*"
+  input: ".gem"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
 - pattern: "{.g{e,c},x}m"
   input: ".gem"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
+- pattern: "x\\."
+  input: "x."
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
+- pattern: "x\\"
+  input: "x"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
+- pattern: "x\\{a\\}"
+  input: "x{a}"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
+- pattern: "{t,x\\{a\\}}"
+  input: "x{a}"
   flags:
     - fnmatch.FNM_EXTGLOB
   want: true
