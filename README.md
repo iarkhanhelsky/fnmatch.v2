@@ -1,7 +1,10 @@
 # fnmatch.v2
+[![Build Status](https://github.com/iarkhanhelsky/fnmatch.v2/actions/workflows/go.yaml/badge.svg)](https://github.com/iarkhanhelsky/fnmatch.v2/actions?workflow=go)
+[![Coverage Status](https://coveralls.io/repos/github/iarkhanhelsky/fnmatch.v2/badge.svg?branch=main)](https://coveralls.io/github/iarkhanhelsky/fnmatch.v2?branch=main)
+
 
 This is fnmatch implementation inspired by [github.com/danwakefield/fnmatch](https://github.com/danwakefield/fnmatch)
-and based on Ruby `File.fnmatch` implementation. 
+and heavily based on Ruby `File.fnmatch`. 
 
 ## Installation
 
