@@ -1,3 +1,11 @@
 - pattern: '*x'
   input: ''
   want: false
+
+- pattern: 'ab*cd'
+  input: 'abcd'
+  want: true
+
+- pattern: '*abcd'
+  input: 'abcd'
+  want: true

@@ -20,7 +20,7 @@ func TestAll(t *testing.T) {
 }
 
 func TestManual(t *testing.T) {
-	newTestcase("**/d", "a/b/c/d", true, FNM_PATHNAME).assert(t)
+	newTestcase("*?", "a", true).assert(t)
 }
 
 func TestMain(m *testing.M) {
