@@ -150,8 +150,8 @@ func fnmatchHelper(pattern string, str string, flags int) (bool, int, int) {
 		// try next '*' position
 		if ptmp >= 0 && stmp >= 0 {
 			px = ptmp
-			_, ssz = utf8.DecodeRuneInString(str[stmp:])
-			sx = stmp + ssz
+			_, ssz = utf8.DecodeRuneInString(str[sx:])
+			sx += ssz
 			continue
 		}
 
