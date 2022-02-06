@@ -1,6 +1,7 @@
 package fnmatch
 
 import (
+	"go.uber.org/goleak"
 	"io/ioutil"
 	"path"
 	"testing"
@@ -20,6 +21,10 @@ func TestAll(t *testing.T) {
 
 func TestManual(t *testing.T) {
 	newTestcase("**/d", "a/b/c/d", true, FNM_PATHNAME).assert(t)
+}
+
+func TestMain(m *testing.M) {
+	goleak.VerifyTestMain(m)
 }
 
 func setupTest() ([]testCase, error) {
@@ -55,10 +60,14 @@ func BenchmarkMatch(b *testing.B) {
 			continue
 		}
 
+		var result = false
 		b.Run(t.name(), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				Match(t.Pattern, t.Input, t.flagMap())
+				result = Match(t.Pattern, t.Input, t.flagMap())
 			}
 		})
+		if result {
+
+		}
 	}
 }
