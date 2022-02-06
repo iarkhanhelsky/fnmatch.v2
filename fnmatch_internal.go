@@ -151,7 +151,7 @@ func fnmatchHelper(pattern string, str string, flags int) (bool, int, int) {
 		if ptmp >= 0 && stmp >= 0 {
 			px = ptmp
 			_, ssz = utf8.DecodeRuneInString(str[stmp:])
-			sx += ssz
+			sx = stmp + ssz
 			continue
 		}
 
