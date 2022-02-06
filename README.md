@@ -35,7 +35,7 @@ func main() {
 | `FNM_PERIOD`                   | :white_check_mark: |                    | :white_check_mark: | :white_check_mark: |
 | `FNM_LEADING_DIR`              |                    |                    | :white_check_mark: |                    |
 | `FNM_CASEFOLD`                 | :white_check_mark: |                    | :white_check_mark: | :white_check_mark: |
-| `FNM_EXTGLOB`                 |                    |                    |                    | :white_check_mark: |
+| `FNM_EXTGLOB`                  | :white_check_mark: |                    |                    | :white_check_mark: |
 | `FNM_SHORTNAME` (Windows)      |                    |                    |                    | :white_check_mark: |
 | `FNM_SYSCASE`                  |                    |                    |                    | :white_check_mark: |
 
