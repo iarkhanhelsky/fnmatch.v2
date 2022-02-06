@@ -35,14 +35,14 @@ class FnFixture
           flags |= File::FNM_PATHNAME
       when 'fnmatch.FNM_PERIOD', 'fnmatch.FNM_DOTMATCH'
           flags |= File::FNM_DOTMATCH
-      when 'fnmatch.FNM_LEADING_DIR'
-          # flags |= File::FNM_LEADING_DIR
       when 'fnmatch.FNM_CASEFOLD'
           flags |= File::FNM_CASEFOLD
       when 'fnmatch.FNM_IGNORECASE'
           flags |= File::FNM_IGNORECASE
       when 'fnmatch.FNM_FILE_NAME'
           flags |= File::FNM_FILE_NAME
+      when 'fnmatch.FNM_EXTGLOB'
+          flags |= File::FNM_EXTGLOB
       else
         fail f
       end

@@ -5,6 +5,10 @@ import (
 	"unicode/utf8"
 )
 
+func expandedMatch(pattern string, str string, flags int) bool {
+	return match(pattern, str, flags)
+}
+
 func match(pattern string, str string, flags int) bool {
 	px := 0
 	sx := 0

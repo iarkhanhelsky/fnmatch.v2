@@ -36,6 +36,8 @@ func newTestcase(pattern string, input string, want bool, flags ...int) testCase
 			stringflags = append(stringflags, "fnmatch.FNM_LEADING_DIR")
 		case FNM_CASEFOLD:
 			stringflags = append(stringflags, "fnmatch.FNM_CASEFOLD")
+		case FNM_EXTGLOB:
+			stringflags = append(stringflags, "fnmatch.FNM_EXTGLOB")
 		default:
 			panic(f)
 		}
@@ -93,6 +95,8 @@ func (tc testCase) flagMap() int {
 			flags |= FNM_IGNORECASE
 		case "fnmatch.FNM_FILE_NAME":
 			flags |= FNM_FILE_NAME
+		case "fnmatch.FNM_EXTGLOB":
+			flags |= FNM_EXTGLOB
 		default:
 			panic(f)
 		}

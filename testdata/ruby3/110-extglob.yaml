@@ -1,0 +1,15 @@
+- pattern: "{.g,t}*"
+  input: ".gem"
+  want: false
+
+- pattern: "{.g,t}*"
+  input: ".gem"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true
+
+- pattern: "{.g{e,c},x}m"
+  input: ".gem"
+  flags:
+    - fnmatch.FNM_EXTGLOB
+  want: true

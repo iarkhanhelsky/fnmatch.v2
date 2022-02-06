@@ -24,6 +24,10 @@ const (
 	// FNM_CASEFOLD If this flag (a GNU extension) is set, the pattern is
 	// matched case-insensitively.
 	FNM_CASEFOLD
+	// FNM_EXTGLOB If this flag is set, extended patterns are supported. The
+	// extended format is {pattern-list},  with pattern-list being a ','
+	// separated list of patterns.
+	FNM_EXTGLOB
 
 	FNM_DOTMATCH   = FNM_PERIOD
 	FNM_IGNORECASE = FNM_CASEFOLD
@@ -33,5 +37,9 @@ const (
 // Matches the pattern against the string, with the given flags, and returns true if the match is
 // successful.
 func Match(pattern string, str string, flags ...int) bool {
-	return match(pattern, str, clampFlags(flags))
+	f := clampFlags(flags)
+	if hasFlag(f, FNM_EXTGLOB) {
+		return expandedMatch(pattern, str, f)
+	}
+	return match(pattern, str, f)
 }
