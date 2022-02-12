@@ -172,6 +172,7 @@ func fnmatchHelper(pattern string, str string, flags int) (bool, int, int) {
 
 			ptmp = px
 			stmp = sx
+			continue
 		case '?':
 			if isEnd(sx, str, flags) {
 				return false, px, sx
@@ -227,7 +228,7 @@ func fnmatchHelper(pattern string, str string, flags int) (bool, int, int) {
 		// try next '*' position
 		if ptmp >= 0 && stmp >= 0 {
 			px = ptmp
-			_, ssz = utf8.DecodeRuneInString(str[sx:])
+			_, ssz = utf8.DecodeRuneInString(str[stmp:])
 			sx += ssz
 			continue
 		}
