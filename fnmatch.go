@@ -1,3 +1,4 @@
+// Package fnmatch provides string-based matching based on fnmatch.3
 package fnmatch
 
 const (
@@ -34,8 +35,8 @@ const (
 	FNM_FILE_NAME  = FNM_PATHNAME
 )
 
-// Matches the pattern against the string, with the given flags, and returns true if the match is
-// successful.
+// Matches the pattern against the string, with the given flags, and returns
+// true if the match is successful.
 func Match(pattern string, str string, flags ...int) bool {
 	f := clampFlags(flags)
 	if hasFlag(f, FNM_EXTGLOB) {
